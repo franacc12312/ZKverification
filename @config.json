@@ -1,0 +1,32 @@
+{
+  "app": {
+    "name": "NoirJS Age Verification",
+    "version": "1.0.0",
+    "description": "Zero-knowledge age verification application"
+  },
+  "circuit": {
+    "minAge": 18,
+    "maxAge": 255,
+    "packageName": "age_verification"
+  },
+  "proof": {
+    "storage": {
+      "key": "ageProof",
+      "format": "json"
+    }
+  },
+  "ui": {
+    "messages": {
+      "generating": "Generating proof... ⏳",
+      "verifying": "Verifying proof...",
+      "success": "✅ Success! Your age is verified to be 18 or greater.",
+      "failure": "❌ Verification failed. Please check your input.",
+      "invalidAge": "Please enter a valid age",
+      "invalidProof": "Invalid proof format. Please check the JSON structure."
+    }
+  },
+  "logging": {
+    "enabled": true,
+    "levels": ["error", "info", "debug"]
+  }
+} 

@@ -1,0 +1,30 @@
+{
+  "name": "twitter-auth-ecdsa",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Twitter authentication with ECDSA signing",
+  "scripts": {
+    "dev": "concurrently \"npm run dev:frontend\" \"npm run dev:server\"",
+    "dev:frontend": "vite",
+    "dev:server": "tsx watch server/index.ts",
+    "build": "tsc && vite build",
+    "serve": "vite preview"
+  },
+  "dependencies": {
+    "axios": "^1.6.7",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "elliptic": "^6.5.4",
+    "express": "^4.18.3"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/elliptic": "^6.4.18",
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.11.24",
+    "concurrently": "^8.2.2",
+    "tsx": "^4.7.1",
+    "typescript": "^5.3.3",
+    "vite": "^5.1.4"
+  }
+}
