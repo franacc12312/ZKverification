@@ -1,7 +1,8 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import { twitterRouter } from './routes/twitter.js';
+import twitterRouter from './routes/twitter.js';
+import githubRouter from './routes/github.js';
 
 // Load environment variables
 dotenv.config();
@@ -9,9 +10,16 @@ dotenv.config();
 // Verify required environment variables
 const TWITTER_CLIENT_ID = process.env.TWITTER_CLIENT_ID;
 const TWITTER_CLIENT_SECRET = process.env.TWITTER_CLIENT_SECRET;
+const GITHUB_CLIENT_ID = process.env.GITHUB_CLIENT_ID;
+const GITHUB_CLIENT_SECRET = process.env.GITHUB_CLIENT_SECRET;
 
 if (!TWITTER_CLIENT_ID || !TWITTER_CLIENT_SECRET) {
     console.error('Error: TWITTER_CLIENT_ID and TWITTER_CLIENT_SECRET must be configured in .env file');
+    process.exit(1);
+}
+
+if (!GITHUB_CLIENT_ID || !GITHUB_CLIENT_SECRET) {
+    console.error('Error: GITHUB_CLIENT_ID and GITHUB_CLIENT_SECRET must be configured in .env file');
     process.exit(1);
 }
 
@@ -50,6 +58,7 @@ app.post('/api/test', (req, res) => {
 
 // Routes
 app.use('/api/twitter', twitterRouter);
+app.use('/api/github', githubRouter);
 
 // Error handling middleware
 app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
@@ -62,4 +71,5 @@ app.listen(port, () => {
     console.log(`Server running on port ${port}`);
     console.log('Accepting requests from: http://localhost:5173');
     console.log('TWITTER_CLIENT_ID:', TWITTER_CLIENT_ID);
+    console.log('GITHUB_CLIENT_ID:', GITHUB_CLIENT_ID);
 }); 

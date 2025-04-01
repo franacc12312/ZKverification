@@ -3,27 +3,123 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Twitter Auth Demo</title>
+    <title>ZK Verification</title>
+    <script type="module" src="/src/components/TwitterLogin.ts"></script>
+    <script type="module" src="/src/components/GitHubLogin.ts"></script>
+    <script type="module" src="/src/components/GitHubCallback.ts"></script>
+    <script type="module" src="/src/components/AuthStatus.ts"></script>
     <style>
         body {
-            margin: 0;
-            padding: 20px;
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-            background-color: #f0f2f5;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f6f8fa;
+        }
+
+        .app-container {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+            padding: 20px;
+        }
+
+        .verification-section {
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #e1e4e8;
+            border-radius: 6px;
+        }
+
+        h1 {
+            color: #24292e;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            margin-top: 0;
+            color: #24292e;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .services-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 600px) {
+            .services-container {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
-    <app-root></app-root>
-    <script type="module">
-        import './src/components/App.ts';
-        import './src/components/TwitterLogin.ts';
-        import './src/components/AuthenticatedView.ts';
-        import './src/components/AuthCallback.ts';
+    <div id="home-view" class="app-container">
+        <h1>ZK Verification</h1>
+        
+        <auth-status></auth-status>
+
+        <div class="services-container">
+            <div class="verification-section">
+                <h2>Twitter Verification</h2>
+                <twitter-login></twitter-login>
+            </div>
+
+            <div class="verification-section">
+                <h2>GitHub Verification</h2>
+                <github-login></github-login>
+            </div>
+        </div>
+    </div>
+
+    <div id="github-callback-view" class="hidden app-container">
+        <github-callback></github-callback>
+    </div>
+
+    <script>
+        // Simple router
+        function handleRoute() {
+            const homeView = document.getElementById('home-view');
+            const callbackView = document.getElementById('github-callback-view');
+            
+            if (window.location.pathname === '/github-callback') {
+                homeView.classList.add('hidden');
+                callbackView.classList.remove('hidden');
+            } else {
+                homeView.classList.remove('hidden');
+                callbackView.classList.add('hidden');
+            }
+        }
+
+        // Handle initial route
+        handleRoute();
+
+        // Handle navigation
+        window.addEventListener('popstate', handleRoute);
+
+        // Hide login buttons when authenticated
+        function updateLoginVisibility() {
+            const twitterToken = localStorage.getItem('twitter_token');
+            const githubToken = localStorage.getItem('github_token');
+            
+            document.querySelector('twitter-login')?.parentElement
+                ?.classList.toggle('hidden', !!twitterToken);
+            
+            document.querySelector('github-login')?.parentElement
+                ?.classList.toggle('hidden', !!githubToken);
+        }
+
+        // Update visibility on load and when auth status changes
+        updateLoginVisibility();
+        document.addEventListener('auth-status-changed', updateLoginVisibility);
+        window.addEventListener('storage', updateLoginVisibility);
     </script>
 </body>
 </html> 

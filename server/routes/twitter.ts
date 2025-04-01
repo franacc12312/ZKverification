@@ -133,4 +133,4 @@ router.get('/user', async (req, res) => {
     }
 });
 
-export const twitterRouter = router; 
+export default router; 
